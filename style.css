@@ -1,0 +1,158 @@
+/*
+Theme Name: Voting System
+Author: author
+Description: Voting system
+Version: 0.0.1
+*/
+
+html body{
+    margin: 0px;
+    padding-top: 20px;
+    background-color: white;
+    color: black;
+}
+
+h1{text-align: center; font-size: 42px;}
+
+.mainContent button:focus {outline:0;}
+.mainContent button {
+    padding: 8px 16px 4px 16px;
+    color: white;
+    font-size: inherit;
+    background: black;
+    border: none;
+	border-radius: 0px;
+}
+
+.mainContent button:hover {color: white; background: #41a62a;}
+.tabMenu button.selected:hover{color: white; background: #41a62a;}
+.tabMenu button.selected{color: #41a62a; background: black;}
+.mainContent button:active{box-shadow: inset 3px 3px 3px 0px rgba(0,0,0,0.75);}
+
+
+.themeName {
+    width: auto;
+    font-size: 46px;
+    font-weight: bolder;
+    text-align: center;
+    color: black;
+}
+
+.themeName input{
+    font-size: inherit;
+    font-weight: inherit;
+    background-color: transparent;
+    text-align: inherit;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+}
+
+.login {
+    padding-top: 25px;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 1fr auto auto 1fr;
+}
+.login button, .loginError{grid-column: 2 / 4;}
+.login button{padding: 15px 0px;}
+.loginError{color: red;}
+
+.mainContent input:focus{outline: none;}
+
+.mainContent{
+	color: white;
+    background-color: black;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    min-width: 474px;
+    max-width: 475px;
+    margin: 0px auto;
+    font-size: 16px;
+}
+
+
+.mainContent input{
+	padding: 2px;
+}
+
+.tabMenu{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    box-sizing: border-box;
+    border-bottom: solid 3px #41a62a;
+}
+.tabMenu button{
+    /* border: none;
+    padding: 8px 16px 4px 16px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border: solid 3px #41a62a;
+    border-bottom: none; */
+}
+
+.topBar{
+    grid-area: 1 / 1 / 2 / 4;
+    display: grid;
+    align-content: center;
+    border-bottom: solid 3px #41a62a;
+}
+
+.suggestionTitle {
+    grid-column: 2 / 4;
+    align-content: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.middleTab{   
+     box-sizing: border-box;
+     height: 300px;
+     margin: 0px;
+     padding: 12px;
+}
+
+.scroll {
+    overflow-y: auto;
+    overflow-x: hidden;  
+}
+
+.scroll::-webkit-scrollbar { width: 10px;}
+.scroll::-webkit-scrollbar-track {background: #0b1b07;}
+.scroll::-webkit-scrollbar-thumb {background: #41a62a;}
+.scroll::-webkit-scrollbar-thumb:hover {background: #41a62a;}
+
+.newVoteTab{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    row-gap: 5px;
+}
+
+.suggestionsTab{
+    padding: 5px 0px;
+    row-gap: 5px;
+    column-gap: 10px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+}
+
+.addGameTab {
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr auto auto 1fr;
+    grid-template-rows: auto auto auto 1fr;
+    row-gap: 10px;
+    column-gap: 10px;
+}
+
+.addGameTab button{
+    padding: 8px 0px;
+    border: none;
+    background: transparent;
+}
+.addGameTab button:hover{background: rgba(255, 255, 255, 0.3);}
+
+.resultTab{text-align: center;}
+.resultTab table{margin: auto; text-align: initial}
+.centerText {text-align: center;}

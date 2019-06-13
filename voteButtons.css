@@ -1,0 +1,62 @@
+.voteButtons{
+    display: grid;
+    width: 100%;
+    grid-template-columns: auto 1fr auto;
+    /* grid-template-rows: 30px; */
+    align-content: center;
+}
+
+.timeLeftText{
+    grid-column: 1 / 4;
+    text-align: center;
+}
+
+.voteButtons a{
+    height: 25px; 
+    align-self: center;
+}
+
+.voteButtons img {
+    width: 25px;
+    height: 25px;
+    padding: -0px;
+    border-radius: 50%;
+    align-self: center;
+    background-color: #41a62a;
+    transform: rotate(-45deg);
+}
+
+.voteButtons img:hover{cursor: pointer;}
+
+.voteButtons .gameTitle{
+    padding-left: 20px;
+    height: 20px;
+    margin-top: 2px;
+}
+
+.voteButtons button{
+    border: solid 2px #41a62a;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    margin: 2px;
+    color: #41a62a;
+    font-size: 16px;
+    padding: 0px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.voteButtons button:hover {
+    color: white;
+    border: solid 2px white;
+
+}
+.voteButtons button:active {box-shadow: inset 3px 3px 3px 0px rgba(0,0,0,0.9);}
+.voteButtons .selected{
+    box-shadow: none; 
+    border-color: white;
+    color: white;
+    background-color: #41a62a;
+}
+
+
