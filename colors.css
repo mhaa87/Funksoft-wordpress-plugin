@@ -1,0 +1,6 @@
+:root {
+    --themeColor: #41a62a;
+    --bg-color: black;
+    --textColor: white;
+    /* var(--textColor); */
+}

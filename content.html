@@ -1,0 +1,136 @@
+<div v-cloak id="app" class="0" >
+
+    <div class="themeName"><span v-if="loggedIn">{{currentVote.title}}</span></div>
+    <!-- <div v-if="saveVoteIcon" class="lds-ring"><div></div><div></div><div></div></div> -->
+    <div class="mainContent">          
+        <div v-if="loggedIn" class="tabMenu">
+            <button @click="curTab = 'vote'" :class="{selected: curTab === 'vote'}">Votes</button>
+            <button @click="curTab = 'suggestions'" :class="{selected: curTab === 'suggestions'}">Suggestions</button>
+            <button @click="curTab = 'newVote'" :class="{selected: curTab === 'newVote'}">New/edit vote</button>
+            <button @click="logout">Logout</button>
+        </div><div v-else></div>
+
+        <div class="middleTab fullSize scroll">   
+            <div v-if="curTab === 'mountingApp'" class="hashGrid fullSize">       
+                <div class="lds-ring large centerGrid"><div></div><div></div><div></div></div>
+            </div>
+
+            <div v-if="curTab === 'login'" class="hashGrid fullSize">
+                <form v-if="curTab === 'login'" class="login centerGrid" @submit.prevent="authUser">
+                Username: <input type="text" name="username" placeholder="Username" v-model="user.name">
+                Password: <input type="password" name="password" placeholder="Password" v-model="user.password">
+                <div class="loginError"><span v-if="loginError" >{{loginError}}</span></div>
+                <button type="submit">
+                    <div v-if="loggingIn" class="lds-ring small"><div></div><div></div><div></div></div>
+                    <span v-else>Login</span> </button>
+                </form>
+            </div>
+            
+            <div v-if="curTab === 'vote'" class="voteTab">
+                <div v-if="votingOpen" class="voteButtons">  
+                    <div class="timeLeftText">Closes in {{getTimeLeft(currentVote.votingCloses)}}</div>
+                    <template v-for="(item, r) in items">
+                        <a :href="item.link" target="_blank"><i class="material-icons">open_in_new</i></a>
+                        <div><div class="gameTitle center">{{item.name}}</div></div>
+                        <div class="center">
+                            <span v-if="ratingRange === 2">
+                                <button @click="vote(item.name, r, 0, (item.vote > 1) ? 1 : 2)">
+                                    <i v-if="item.vote > 1" class="material-icons" :class="{spin: voteSpin[r]}">star</i>
+                                    <i v-else class="material-icons" :class="{spin: voteSpin[r]}">star_border</i>
+                                </button>
+                            </span>
+                            <span v-else v-for="i in ratingRange" :key="i">
+                                <button @click="vote(item.name, r, i, i)">
+                                    <i v-if="item.vote >= i" class="material-icons" :class="{spin: voteSpin[r]}">star</i>
+                                    <i v-else class="material-icons" :class="{spin: voteSpin[r]}">star_border</i>
+                                </button>
+                            </span>
+                        </div>
+                    </template>
+                </div>
+                <div v-else-if="suggestionsOpen" class="resultTab">                
+                    Starts in: {{getTimeLeft(currentVote.suggestionsCloses)}}
+                </div>
+                <div v-else class="resultTab">                
+                    <button @click="getScores">Calculate results</button>
+                    <table v-if="itemScores !== false">
+                        <tr v-for="item in itemScores">
+                            <td>{{item.name}}:</td><td>{{item.score}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div v-if="curTab === 'suggestions'">
+                <div v-if="suggestionsOpen" class="suggestionsTab">
+                    <span class="timeLeftText">Closes in {{getTimeLeft(currentVote.suggestionsCloses)}}</span>
+                    <span style="text-align: center">Name:</span>
+                    <input v-model="newItem.name">
+                    <div style="grid-area: 2 / 3 / 4 / 4; height:100%; width: 75px">
+                        <div v-if="this.items.length >= currentVote.limit"></div>
+                        <button v-else-if="saveVoteIcon" class="fullSize"><div class="lds-ring small"><div></div><div></div><div></div></div></button>
+                        <button class="fullSize" v-else @click="addItem">Add</button>
+                    </div>
+                    <span style="text-align: center">Link:</span>
+                    <input v-model="newItem.link">
+                    <template v-for="(item, i) in items.filter((e) => e.user === user.name)" class="scroll">
+                        <div style="width: 6em;">
+                            <div v-if="deleteLoading[i]"><div class="lds-ring small"><div></div><div></div><div></div></div></div>
+                            <button v-else @click="deleteItem(item.name, i)">Delete</button>
+                        </div>
+                        <span class="suggestionTitle">{{item.name}}</span>            
+                    </template>
+                </div><div v-else class="centerText">
+                    <br/>My suggestions:<br/>
+                    <template v-for="item in items.filter((e) => e.user === user.name)" class="scroll">
+                        <span class="suggestionTitle">{{item.name}}</span><br/>         
+                    </template>
+                </div>
+            </div>
+
+            <div v-if="curTab === 'newVote'" class="newVoteTab">
+
+                <div v-if="voteTab === 'edit'" class="newVoteButtons">                     
+                    <button @click="createNewVote">New</button><br/>
+                    <button @click="updateVote">Save</button><br/>
+                    <button @click="voteTab = 'open'">Load</button><br/>
+                    <button @click="voteTab = 'delete'">Delete</button><br/>
+                </div><div v-else class="newVoteButtons"></div>
+
+                <ul v-if="voteTab === 'open'">
+                    <li v-for="vote in pastVotes">
+                        <button @click="() => {voteTab = 'edit'; getPastVote(vote.date);}">{{vote.name}}</button>
+                    </li>
+                    <button @click="voteTab = 'edit'">Back</button>
+                </ul>
+                <div v-else-if="voteTab === 'delete'">
+                    <div>Are you sure you want to delete "{{currentVote.title}}"?</div>                    
+                    <button @click="voteTab = 'edit'">Cancel</button>
+                    <button @click="deleteVote">Delete</button>
+                </div>
+                <div v-else-if="saveVoteIcon" class="hashGrid fullSize">
+                    <div class="lds-ring large centerGrid"><div></div><div></div><div></div></div>
+                </div>
+                <div v-else class="newVoteContent">
+                    <div>Title: &emsp;<input v-model="newVote.title" placeholder="..." style="width: 15em"></div>
+                    <div class="fullSize">Max suggestions: &emsp;
+                        <input type="checkbox" :checked="newVote.limit > 0" @change="limitToggle">
+                        <input type="number" v-if="newVote.limit > 0" v-model="newVote.limit" style="width: 3em">
+                    </div>
+                    <div>Rating range:&emsp; 
+                        <span><input type=number min="2" max="7" v-model="newVote.ratingRange" style="width: 3em"></span></div>
+                    <div>Suggestions closes:</div><div>
+                        <input type="date" v-model="newVote.suggestionsCloses.date">
+                        <input type="time" v-model="newVote.suggestionsCloses.time"></div>
+                    <div>Voting closes:</div><div>
+                        <input type="date" v-model="newVote.votingCloses.date">
+                        <input type="time" v-model="newVote.votingCloses.time"></div>
+                    <div class="fullSize">Voting open during suggestions:
+                        <input type="checkbox" :checked="newVote.voteDuringSuggestions" @change="newVote.voteDuringSuggestions = !newVote.voteDuringSuggestions">
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

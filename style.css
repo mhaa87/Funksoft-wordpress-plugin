@@ -5,37 +5,41 @@ Description: Voting system
 Version: 0.0.1
 */
 
-html body{
-    margin: 0px;
-    padding-top: 20px;
-    background-color: white;
-    color: black;
+.votingPugin{
+    /* margin: 0px; */
+    /* padding-top: 20px; */
+    background-color: var(--fvs_bg_color);
+    color: var(--fvs_text_color);
 }
 
 h1{text-align: center; font-size: 42px;}
 
-.mainContent button:focus {outline:0;}
+.mainContent button:focus {outline:0; background: var(--fvs_theme_color);}
+.mainContent button:active {background: var(--fvs_bg_color);}
+.mainContent button:hover {background: var(--fvs_theme_color);}
 .mainContent button {
     padding: 8px 16px 4px 16px;
-    color: white;
+    /* color: white; */
     font-size: inherit;
-    background: black;
+    background: var(--fvs_bg_color);
     border: none;
-	border-radius: 0px;
+    border-radius: 0px;
 }
 
-.mainContent button:hover {color: white; background: #41a62a;}
-.tabMenu button.selected:hover{color: white; background: #41a62a;}
-.tabMenu button.selected{color: #41a62a; background: black;}
+/* .mainContent button:hover {color: var(--fvs_text_color); background: #41a62a;} */
+.tabMenu button.selected:hover{color: var(--fvs_text_color); background: var(--fvs_theme_color);}
+.tabMenu button.selected{color: var(--fvs_theme_color); background: var(--fvs_bg_color);;}
 .mainContent button:active{box-shadow: inset 3px 3px 3px 0px rgba(0,0,0,0.75);}
 
 
 .themeName {
     width: auto;
     font-size: 46px;
+    height: 64px;
     font-weight: bolder;
     text-align: center;
-    color: black;
+    color: var(--fvs_title_color);
+    background-color: var(--fvs_title_bg);
 }
 
 .themeName input{
@@ -48,27 +52,56 @@ h1{text-align: center; font-size: 42px;}
     font-family: inherit;
 }
 
+/* input[type="checkbox"] {width: 18px; height: 18px; margin: auto} */
+
 .login {
-    padding-top: 25px;
     display: grid;
     grid-gap: 5px;
-    grid-template-columns: 1fr auto auto 1fr;
+    grid-template-columns: auto auto;
+    /* grid-template-rows: auto auto auto 1fr; */
 }
-.login button, .loginError{grid-column: 2 / 4;}
-.login button{padding: 15px 0px;}
-.loginError{color: red;}
+.loginError{grid-column: 1 / 3;}
+.login button{grid-column: 1 / 3; padding: 0px; height: 50px; width: 80%; margin: auto;}
+.loginError{color: red; min-height: 20px;}
+.newVoteButtons{
+    height: 100%;
+    width: 90px;
+    font-size: 14px;
+    border-right: solid 3px var(--fvs_theme_color);
+}
+.newVoteButtons button{
+    height: 40px;
+    font-size: 14px;
+    width: 7em;
+}
+.newVoteButton:hover{font-size: 18px;}
+
+/* .newVoteButton:active{font-size: 10px;} */
 
 .mainContent input:focus{outline: none;}
 
-.mainContent{
-	color: white;
-    background-color: black;
+[v-cloak] { display: none; }
+.fullSize{height: 100%; width: 100%;}
+.flex{display: flex;}
+.center{margin: auto;}
+.centerGrid{
+    grid-area: 2 / 2 / 3 / 3;
+}
+.hashGrid{
     display: grid;
-    grid-template-rows: auto auto 1fr;
-    min-width: 474px;
-    max-width: 475px;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 1fr auto 1fr;
+}
+
+.mainContent{
+	color: var(--fvs_text_color);
+    background-color: var(--fvs_bg_color);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    width: 474px;
+    height: 335px;
     margin: 0px auto;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 
@@ -77,25 +110,18 @@ h1{text-align: center; font-size: 42px;}
 }
 
 .tabMenu{
+    height: 35px;
     display: grid;
     grid-template-columns: auto auto auto auto;
     box-sizing: border-box;
-    border-bottom: solid 3px #41a62a;
-}
-.tabMenu button{
-    /* border: none;
-    padding: 8px 16px 4px 16px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    border: solid 3px #41a62a;
-    border-bottom: none; */
+    border-bottom: solid 3px var(--fvs_theme_color);
 }
 
 .topBar{
     grid-area: 1 / 1 / 2 / 4;
     display: grid;
     align-content: center;
-    border-bottom: solid 3px #41a62a;
+    border-bottom: solid 3px var(--fvs_theme_color);;
 }
 
 .suggestionTitle {
@@ -105,11 +131,9 @@ h1{text-align: center; font-size: 42px;}
     vertical-align: middle;
 }
 
-.middleTab{   
-     box-sizing: border-box;
-     height: 300px;
-     margin: 0px;
-     padding: 12px;
+.middleTab{  
+    box-sizing: border-box;
+    margin: 0px;
 }
 
 .scroll {
@@ -119,22 +143,39 @@ h1{text-align: center; font-size: 42px;}
 
 .scroll::-webkit-scrollbar { width: 10px;}
 .scroll::-webkit-scrollbar-track {background: #0b1b07;}
-.scroll::-webkit-scrollbar-thumb {background: #41a62a;}
-.scroll::-webkit-scrollbar-thumb:hover {background: #41a62a;}
+.scroll::-webkit-scrollbar-thumb {background: var(--fvs_theme_color);}
+.scroll::-webkit-scrollbar-thumb:hover {background: var(--fvs_theme_color);}
 
 .newVoteTab{
     display: grid;
-    grid-template-columns: auto auto auto;
-    row-gap: 5px;
+    grid-template-columns: auto 1fr;
+    height: 100%;
+}
+
+.newVoteContent{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto auto auto auto 1fr;
+    row-gap: 10px;
+    padding: 12px;
+}
+
+.voteTab{
+    padding: 12px;
 }
 
 .suggestionsTab{
-    padding: 5px 0px;
+    padding: 12px;
     row-gap: 5px;
     column-gap: 10px;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
+}
+
+.gameLink{
+    color: var(--fvs_text_color);
+    text-decoration: none;
 }
 
 .addGameTab {
