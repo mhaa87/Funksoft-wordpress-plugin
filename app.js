@@ -143,8 +143,10 @@ const app = new Vue({
             this.$set(this.voteSpin, r , true);
             var res = await axios.post(this.uri + "/vote", {"date": this.currentVote.date, "token": this.token, "item": name, "vote": vote});
             if(res.status===200 && res.data.status !== false) this.$set(this.items[r], 'vote', vote);
-            this.$set(this.voteSpin, r , false);
+            setTimeout(() => {this.stopVoteSpin(r)}, 600);
         },
+
+        stopVoteSpin(r){this.$set(this.voteSpin, r , false)},
 
         async getScores(){
             // console.log("calculating results...");
